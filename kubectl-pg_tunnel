@@ -353,7 +353,8 @@ upgrade_plugin() {
     # Check if we have curl or wget
     if command -v curl >/dev/null 2>&1; then
         print_info "Downloading and running installer..."
-        if curl -fsSL https://raw.githubusercontent.com/sgyyz/kubectl-pg-tunnel/main/install.sh | bash; then
+        # shellcheck disable=SC2312
+        if FORCE_INSTALL=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/sgyyz/kubectl-pg-tunnel/main/install.sh)"; then
             echo ""
             print_success "Upgrade completed successfully!"
             echo ""
@@ -364,7 +365,8 @@ upgrade_plugin() {
         fi
     elif command -v wget >/dev/null 2>&1; then
         print_info "Downloading and running installer..."
-        if wget -qO- https://raw.githubusercontent.com/sgyyz/kubectl-pg-tunnel/main/install.sh | bash; then
+        # shellcheck disable=SC2312
+        if FORCE_INSTALL=1 bash -c "$(wget -qO- https://raw.githubusercontent.com/sgyyz/kubectl-pg-tunnel/main/install.sh)"; then
             echo ""
             print_success "Upgrade completed successfully!"
             echo ""
