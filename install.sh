@@ -160,11 +160,19 @@ download_plugin() {
     # Check if plugin already exists
     if [[ -f "${plugin_path}" ]]; then
         print_warning "Plugin already installed at: ${plugin_path}"
-        read -p "Overwrite existing installation? (y/n) " -n 1 -r
-        echo
-        if [[ ! ${REPLY} =~ ^[Yy]$ ]]; then
-            print_info "Installation cancelled"
-            exit 0
+
+        # Check if force install or running in non-interactive mode
+        if [[ -n "${FORCE_INSTALL:-}" ]] || [[ ! -t 0 ]]; then
+            # Force install mode or non-interactive mode (e.g., upgrade command) - auto-overwrite
+            print_info "Auto-overwriting existing installation..."
+        else
+            # Interactive mode - prompt user
+            read -p "Overwrite existing installation? (y/n) " -n 1 -r
+            echo
+            if [[ ! ${REPLY} =~ ^[Yy]$ ]]; then
+                print_info "Installation cancelled"
+                exit 0
+            fi
         fi
 
         # Backup existing installation
