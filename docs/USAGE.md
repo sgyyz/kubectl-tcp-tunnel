@@ -51,19 +51,19 @@ settings:
   # Define connection types with YAML anchors
   postgres: &postgres
     local-port: 15432
-    db-port: 5432
+    remote-port: 5432
 
   mysql: &mysql
     local-port: 13306
-    db-port: 3306
+    remote-port: 3306
 
   redis: &redis
     local-port: 16379
-    db-port: 6379
+    remote-port: 6379
 
   mongodb: &mongodb
     local-port: 17017
-    db-port: 27017
+    remote-port: 27017
 
 # Define environments
 environments:
@@ -99,7 +99,7 @@ environments:
 | `settings.jump-pod-image` | Docker image with socat | `alpine/socat:latest` |
 | `settings.jump-pod-wait-timeout` | Seconds to wait for pod ready | `60` |
 | `settings.<type>.local-port` | Local port for connection type | Type-specific |
-| `settings.<type>.db-port` | Remote port for connection type | Type-specific |
+| `settings.<type>.remote-port` | Remote port for connection type | Type-specific |
 | `environments.<name>.k8s-context` | Kubectl context for environment | Required |
 | `environments.<name>.connections.<alias>.host` | Service hostname | Required |
 | `environments.<name>.connections.<alias>.type` | Connection type (YAML anchor) | Required |
@@ -139,12 +139,12 @@ settings:
   # Custom application on port 8080
   myapp: &myapp
     local-port: 18080
-    db-port: 8080
+    remote-port: 8080
 
   # SSH tunnel
   ssh: &ssh
     local-port: 2222
-    db-port: 22
+    remote-port: 22
 
 environments:
   staging:
@@ -393,7 +393,7 @@ Version 2.0 introduces a **breaking change** to support generic TCP connections.
 ```yaml
 settings:
   local-port: 5432
-  db-port: 5432
+  remote-port: 5432
 
 environments:
   staging:
@@ -409,11 +409,11 @@ environments:
 settings:
   postgres: &postgres
     local-port: 15432
-    db-port: 5432
+    remote-port: 5432
 
   mysql: &mysql
     local-port: 13306
-    db-port: 3306
+    remote-port: 3306
 
 environments:
   staging:
@@ -439,7 +439,7 @@ environments:
    settings:
      postgres: &postgres
        local-port: 15432
-       db-port: 5432
+       remote-port: 5432
    ```
 
 3. **Rename `databases:` to `connections:`:**
