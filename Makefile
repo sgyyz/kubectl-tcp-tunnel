@@ -125,6 +125,9 @@ release:
 	@echo ""
 	@echo "✅ Release v$(VERSION) created!"
 	@echo ""
+	@echo "Cleaning up backup files..."
+	@rm -f CHANGELOG.md.bak
+	@echo ""
 	@echo "Next step: Push to GitHub"
 	@echo "  git push origin main --tags"
 	@echo ""
