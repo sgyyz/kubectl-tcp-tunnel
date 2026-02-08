@@ -328,13 +328,13 @@ If you have a test service accessible from your cluster:
 
 ```bash
 # Create a tunnel to PostgreSQL
-kubectl tcp-tunnel --env staging --db user-db
+kubectl tcp-tunnel --env staging --connection user-db
 
 # In another terminal, test connection
 psql -h localhost -p 15432 -U your-username your-database
 
 # Or test MySQL connection
-kubectl tcp-tunnel --env staging --db order-db
+kubectl tcp-tunnel --env staging --connection order-db
 mysql -h localhost -P 13306 -u your-username your-database
 ```
 
@@ -540,8 +540,8 @@ kubectl tcp-tunnel --version
 
 ```bash
 # Create useful shell aliases
-echo 'alias pg-staging="kubectl tcp-tunnel --env staging --db user-db"' >> ~/.bashrc
-echo 'alias pg-prod="kubectl tcp-tunnel --env production --db user-db"' >> ~/.bashrc
+echo 'alias pg-staging="kubectl tcp-tunnel --env staging --connection user-db"' >> ~/.bashrc
+echo 'alias pg-prod="kubectl tcp-tunnel --env production --connection user-db"' >> ~/.bashrc
 source ~/.bashrc
 ```
 

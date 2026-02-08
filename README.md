@@ -65,19 +65,19 @@ curl -fsSL https://raw.githubusercontent.com/sgyyz/kubectl-tcp-tunnel/main/insta
 
 ```bash
 # Create tunnel to staging PostgreSQL database
-kubectl tcp-tunnel --env staging --db user-db
+kubectl tcp-tunnel --env staging --connection user-db
 # Connect: psql -h localhost -p 15432 -U myuser mydatabase
 
 # Create tunnel to staging MySQL database
-kubectl tcp-tunnel --env staging --db order-db
+kubectl tcp-tunnel --env staging --connection order-db
 # Connect: mysql -h localhost -P 13306 -u myuser mydatabase
 
 # Create tunnel to Redis cache
-kubectl tcp-tunnel --env staging --db cache
+kubectl tcp-tunnel --env staging --connection cache
 # Connect: redis-cli -h localhost -p 16379
 
 # Override local port
-kubectl tcp-tunnel --env staging --db user-db --local-port 5433
+kubectl tcp-tunnel --env staging --connection user-db --local-port 5433
 ```
 
 ## Requirements

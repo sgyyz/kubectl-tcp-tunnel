@@ -115,16 +115,16 @@ environments:
 # Once configured, use the plugin like this:
 #
 #   # Connect to staging user database (PostgreSQL)
-#   kubectl tcp-tunnel --env staging --db user-db
+#   kubectl tcp-tunnel --env staging --connection user-db
 #
 #   # Connect to production analytics database (PostgreSQL)
-#   kubectl tcp-tunnel --env production --db analytics-db
+#   kubectl tcp-tunnel --env production --connection analytics-db
 #
 #   # Connect to Redis cache
-#   kubectl tcp-tunnel --env staging --db cache
+#   kubectl tcp-tunnel --env staging --connection cache
 #
 #   # Connect with custom local port (overrides type definition)
-#   kubectl tcp-tunnel --env staging --db order-db --local-port 3307
+#   kubectl tcp-tunnel --env staging --connection order-db --local-port 3307
 #
 #   # List all environments and connections
 #   kubectl tcp-tunnel ls

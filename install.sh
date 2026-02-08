@@ -298,7 +298,7 @@ print_instructions() {
     echo "   kubectl tcp-tunnel ls"
     echo ""
     echo "4. Create your first tunnel:"
-    echo "   kubectl tcp-tunnel --env staging --db your_database_alias"
+    echo "   kubectl tcp-tunnel --env staging --connection your_connection_alias"
     echo ""
     echo "For more information:"
     echo "  https://github.com/${GITHUB_REPO}"
