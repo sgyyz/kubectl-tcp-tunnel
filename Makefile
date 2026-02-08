@@ -4,16 +4,17 @@ help:
 	@echo "kubectl-tcp-tunnel - Development Commands"
 	@echo ""
 	@echo "Available targets:"
-	@echo "  make dev-setup  - Install development dependencies"
-	@echo "  make setup-hooks- Set up git pre-commit hooks"
-	@echo "  make lint       - Run shellcheck on all scripts"
-	@echo "  make test       - Run BATS test suite"
-	@echo "  make check      - Run both lint and test"
-	@echo "  make install    - Install the plugin locally"
-	@echo "  make uninstall  - Uninstall the plugin"
-	@echo "  make clean      - Remove temporary files"
-	@echo "  make release    - Prepare a new release (usage: make release VERSION=1.0.0)"
-	@echo "  make help       - Show this help message"
+	@echo "  make dev-setup     - Install development dependencies"
+	@echo "  make setup-hooks   - Set up git pre-commit hooks"
+	@echo "  make lint          - Run shellcheck on all scripts"
+	@echo "  make test          - Run BATS test suite"
+	@echo "  make test-parallel - Run tests in parallel (via CI)"
+	@echo "  make check         - Run both lint and test"
+	@echo "  make install       - Install the plugin locally"
+	@echo "  make uninstall     - Uninstall the plugin"
+	@echo "  make clean         - Remove temporary files"
+	@echo "  make release       - Prepare a new release (usage: make release VERSION=1.0.0)"
+	@echo "  make help          - Show this help message"
 	@echo ""
 	@echo "First time setup:"
 	@echo "  1. make dev-setup    (installs shellcheck, bats, yq)"
@@ -48,11 +49,17 @@ lint:
 test:
 	@echo "Running BATS tests..."
 	@if command -v bats >/dev/null 2>&1; then \
-		bats tests/tcp_tunnel_test.bats; \
+		bats tests/*.bats; \
 	else \
 		echo "Error: bats not found. Install with: brew install bats-core"; \
 		exit 1; \
 	fi
+
+test-parallel:
+	@echo "Running BATS tests in parallel..."
+	@echo "Note: Parallel execution is configured in CI/CD (GitHub Actions)"
+	@echo "Running tests sequentially locally..."
+	@$(MAKE) test
 
 check: lint test
 	@echo "✅ All checks passed!"
