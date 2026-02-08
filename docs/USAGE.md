@@ -16,13 +16,13 @@ Comprehensive guide for using kubectl-tcp-tunnel for any TCP service.
 ### Command Syntax
 
 ```bash
-kubectl tcp-tunnel --env <environment> --db <connection> [OPTIONS]
+kubectl tcp-tunnel --env <environment> --connection <connection> [OPTIONS]
 ```
 
 ### Required Flags
 
 - `--env <environment>` - Environment to use (staging, production, etc.)
-- `--db <connection>` - Connection alias to use (supports any TCP service)
+- `--connection <connection>` - Connection alias to use (supports any TCP service)
 
 ### Optional Flags
 
@@ -163,13 +163,13 @@ environments:
 
 ```bash
 # Connect to staging user database
-kubectl tcp-tunnel --env staging --db user-db
+kubectl tcp-tunnel --env staging --connection user-db
 
 # Connect to production order database
-kubectl tcp-tunnel --env production --db order-db
+kubectl tcp-tunnel --env production --connection order-db
 
 # Use custom local port
-kubectl tcp-tunnel --env staging --db user-db --local-port 5433
+kubectl tcp-tunnel --env staging --connection user-db --local-port 5433
 ```
 
 When the tunnel is established, you'll see:
@@ -256,7 +256,7 @@ Uninstalls kubectl-tcp-tunnel. You'll be prompted whether to remove configuratio
 
 ```bash
 # Terminal 1: Create tunnel
-kubectl tcp-tunnel --env staging --db user-db
+kubectl tcp-tunnel --env staging --connection user-db
 
 # Terminal 2: Connect with psql
 psql -h localhost -p 15432 -U myuser mydatabase
@@ -266,7 +266,7 @@ psql -h localhost -p 15432 -U myuser mydatabase
 
 ```bash
 # Terminal 1: Create tunnel
-kubectl tcp-tunnel --env staging --db order-db
+kubectl tcp-tunnel --env staging --connection order-db
 
 # Terminal 2: Connect with mysql
 mysql -h localhost -P 13306 -u myuser mydatabase
@@ -276,7 +276,7 @@ mysql -h localhost -P 13306 -u myuser mydatabase
 
 ```bash
 # Terminal 1: Create tunnel
-kubectl tcp-tunnel --env staging --db cache
+kubectl tcp-tunnel --env staging --connection cache
 
 # Terminal 2: Connect with redis-cli
 redis-cli -h localhost -p 16379
@@ -286,7 +286,7 @@ redis-cli -h localhost -p 16379
 
 ```bash
 # Terminal 1: Create tunnel
-kubectl tcp-tunnel --env staging --db mongo-db
+kubectl tcp-tunnel --env staging --connection mongo-db
 
 # Terminal 2: Connect with mongosh
 mongosh "mongodb://localhost:17017/mydatabase"
@@ -298,7 +298,7 @@ mongosh "mongodb://localhost:17017/mydatabase"
 
 1. Create the tunnel:
    ```bash
-   kubectl tcp-tunnel --env production --db user-db
+   kubectl tcp-tunnel --env production --connection user-db
    ```
 
 2. Configure your GUI tool:
@@ -312,7 +312,7 @@ mongosh "mongodb://localhost:17017/mydatabase"
 
 ```bash
 # Terminal 1: Create tunnel
-kubectl tcp-tunnel --env staging --db user-db
+kubectl tcp-tunnel --env staging --connection user-db
 
 # Terminal 2: Run script
 psql -h localhost -p 5432 -U myuser -d mydatabase -f query.sql
@@ -322,7 +322,7 @@ psql -h localhost -p 5432 -U myuser -d mydatabase -f query.sql
 
 ```bash
 # Terminal 1: Create tunnel
-kubectl tcp-tunnel --env production --db user-db
+kubectl tcp-tunnel --env production --connection user-db
 
 # Terminal 2: Dump database
 pg_dump -h localhost -p 5432 -U myuser mydatabase > backup.sql
@@ -332,10 +332,10 @@ pg_dump -h localhost -p 5432 -U myuser mydatabase > backup.sql
 
 ```bash
 # Terminal 1: Connect to user database on default port
-kubectl tcp-tunnel --env staging --db user-db
+kubectl tcp-tunnel --env staging --connection user-db
 
 # Terminal 2: Connect to order database on different port
-kubectl tcp-tunnel --env staging --db order-db --local-port 5433
+kubectl tcp-tunnel --env staging --connection order-db --local-port 5433
 
 # Terminal 3: Connect to both
 psql -h localhost -p 5432 -U user1 userdb    # user-db
@@ -518,7 +518,7 @@ You can override these with `--local-port` flag or modify the connection type de
 
 **Solutions**:
 - Change `local-port` in config to a different port (e.g., `5433`)
-- Or use `--local-port` flag: `kubectl tcp-tunnel --env staging --db user-db --local-port 5433`
+- Or use `--local-port` flag: `kubectl tcp-tunnel --env staging --connection user-db --local-port 5433`
 - Or stop other PostgreSQL services on your local machine
 - Check what's using the port: `lsof -i :5432` (macOS/Linux)
 
@@ -617,7 +617,7 @@ Override the default config file location:
 
 ```bash
 export TCP_TUNNEL_CONFIG=/path/to/custom/config.yaml
-kubectl tcp-tunnel --env staging --db user-db
+kubectl tcp-tunnel --env staging --connection user-db
 ```
 
 ## Tips and Best Practices
@@ -628,9 +628,9 @@ Create shell aliases for frequently used databases:
 
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
-alias pg-staging-user='kubectl tcp-tunnel --env staging --db user-db'
-alias pg-prod-user='kubectl tcp-tunnel --env production --db user-db'
-alias pg-prod-order='kubectl tcp-tunnel --env production --db order-db'
+alias pg-staging-user='kubectl tcp-tunnel --env staging --connection user-db'
+alias pg-prod-user='kubectl tcp-tunnel --env production --connection user-db'
+alias pg-prod-order='kubectl tcp-tunnel --env production --connection order-db'
 ```
 
 ### Use Different Ports for Different Environments
@@ -646,10 +646,10 @@ environments:
   # Use default port 5432
 
 # Connect to staging
-kubectl tcp-tunnel --env staging --db user-db --local-port 5432
+kubectl tcp-tunnel --env staging --connection user-db --local-port 5432
 
 # Connect to production simultaneously
-kubectl tcp-tunnel --env production --db user-db --local-port 5433
+kubectl tcp-tunnel --env production --connection user-db --local-port 5433
 ```
 
 ### Keep Tunnels Alive
@@ -661,7 +661,7 @@ Use `tmux` or `screen` to keep tunnels alive:
 tmux new -s tcp-tunnel
 
 # Create tunnel
-kubectl tcp-tunnel --env staging --db user-db
+kubectl tcp-tunnel --env staging --connection user-db
 
 # Detach: Ctrl+B then D
 # Reattach: tmux attach -t tcp-tunnel

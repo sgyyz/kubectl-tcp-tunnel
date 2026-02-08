@@ -273,8 +273,8 @@ run_plugin() {
     [[ "$output" =~ "requires an environment argument" ]]
 }
 
-@test "errors on --db without argument" {
-    run_plugin --db
+@test "errors on --connection without argument" {
+    run_plugin --connection
     [ "$status" -eq 1 ]
     [[ "$output" =~ "requires a" ]]
 }
@@ -378,25 +378,25 @@ EOSCRIPT
 # ==============================================================================
 
 @test "errors when missing --env argument" {
-    run_plugin --db user-db
+    run_plugin --connection user-db
     [ "$status" -eq 1 ]
     [[ "$output" =~ "Missing required option: --env" ]]
 }
 
-@test "errors when missing --db argument" {
+@test "errors when missing --connection argument" {
     run_plugin --env staging
     [ "$status" -eq 1 ]
-    [[ "$output" =~ "Missing required option: --db" ]]
+    [[ "$output" =~ "Missing required option: --connection" ]]
 }
 
 @test "errors on invalid environment" {
-    run_plugin --env invalid_env --db user-db
+    run_plugin --env invalid_env --connection user-db
     [ "$status" -eq 1 ]
     [[ "$output" =~ "Unknown environment" ]]
 }
 
 @test "errors on unknown connection alias" {
-    run_plugin --env staging --db unknown_db
+    run_plugin --env staging --connection unknown_db
     [ "$status" -eq 1 ]
     [[ "$output" =~ "Unknown connection" ]]
 }
@@ -553,12 +553,12 @@ EOSCRIPT
 # ==============================================================================
 
 @test "validates environment exists before creating tunnel" {
-    run_plugin --env nonexistent --db user-db
+    run_plugin --env nonexistent --connection user-db
     [ "$status" -eq 1 ]
 }
 
 @test "validates connection alias exists before creating tunnel" {
-    run_plugin --env staging --db nonexistent_db
+    run_plugin --env staging --connection nonexistent_db
     [ "$status" -eq 1 ]
 }
 
@@ -605,13 +605,13 @@ EOSCRIPT
 }
 
 @test "lists available environments on invalid environment" {
-    run_plugin --env invalid --db user-db
+    run_plugin --env invalid --connection user-db
     [ "$status" -eq 1 ]
     [[ "$output" =~ "Available environments" ]]
 }
 
 @test "lists available connections on invalid connection" {
-    run_plugin --env staging --db invalid_db
+    run_plugin --env staging --connection invalid_db
     [ "$status" -eq 1 ]
     [[ "$output" =~ "Available connections" ]]
 }
@@ -621,18 +621,18 @@ EOSCRIPT
 # ==============================================================================
 
 @test "handles empty environment name" {
-    run_plugin --env "" --db user-db
+    run_plugin --env "" --connection user-db
     [ "$status" -eq 1 ]
 }
 
 @test "handles unexpected positional arguments" {
-    run_plugin --env staging --db user-db extra_arg
+    run_plugin --env staging --connection user-db extra_arg
     [ "$status" -eq 1 ]
     [[ "$output" =~ "Unexpected argument" ]]
 }
 
 @test "supports --local-port flag" {
-    run_plugin --env staging --db user-db --local-port 5433 --help
+    run_plugin --env staging --connection user-db --local-port 5433 --help
     [ "$status" -eq 0 ]
 }
 
@@ -671,7 +671,7 @@ EOSCRIPT
     chmod +x "${TEST_DIR}/bin/yq"
 
     # Run plugin and check that it reads local-port from connection type
-    run_plugin --env staging --db user-db --help
+    run_plugin --env staging --connection user-db --help
     [ "$status" -eq 0 ]
 }
 
@@ -694,7 +694,7 @@ environments:
 EOF
 
     # Flag should override connection type
-    run_plugin --env staging --db user-db --local-port 9999 --help
+    run_plugin --env staging --connection user-db --local-port 9999 --help
     [ "$status" -eq 0 ]
 }
 
@@ -945,6 +945,6 @@ EOSCRIPT
 
 @test "validates connection host is not empty" {
     # User-db should have a valid host in staging
-    run_plugin --env staging --db user-db --help
+    run_plugin --env staging --connection user-db --help
     [ "$status" -eq 0 ]
 }
