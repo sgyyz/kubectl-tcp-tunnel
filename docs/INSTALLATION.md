@@ -160,15 +160,15 @@ settings:
   # Define connection types with YAML anchors
   postgres: &postgres
     local-port: 15432
-    db-port: 5432
+    remote-port: 5432
 
   mysql: &mysql
     local-port: 13306
-    db-port: 3306
+    remote-port: 3306
 
   redis: &redis
     local-port: 16379
-    db-port: 6379
+    remote-port: 6379
 
 environments:
   # Update with your actual Kubernetes context name
@@ -227,19 +227,19 @@ settings:
   # Connection type definitions
   postgres: &postgres
     local-port: 15432
-    db-port: 5432
+    remote-port: 5432
 
   mysql: &mysql
     local-port: 13306
-    db-port: 3306
+    remote-port: 3306
 
   redis: &redis
     local-port: 16379
-    db-port: 6379
+    remote-port: 6379
 
   mongodb: &mongodb
     local-port: 17017
-    db-port: 27017
+    remote-port: 27017
 
 environments:
   dev:

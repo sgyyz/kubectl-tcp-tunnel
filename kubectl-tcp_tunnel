@@ -18,7 +18,7 @@ DEFAULT_NAMESPACE="default"
 DEFAULT_JUMP_POD_IMAGE="alpine/socat:latest"
 DEFAULT_JUMP_POD_WAIT_TIMEOUT="60"
 DEFAULT_LOCAL_PORT="5432"
-DEFAULT_DB_PORT="5432"
+DEFAULT_REMOTE_PORT="5432"
 
 # Color codes for output
 RED='\033[0;31m'
@@ -254,11 +254,11 @@ get_connection_local_port() {
     yq eval "explode(.) | .environments.${env}.connections.${conn}.type.local-port // \"\"" "${CONFIG_FILE}" 2>/dev/null
 }
 
-# Get connection db-port (from type definition)
-get_connection_db_port() {
+# Get connection remote-port (from type definition)
+get_connection_remote_port() {
     local env="$1"
     local conn="$2"
-    yq eval "explode(.) | .environments.${env}.connections.${conn}.type.db-port // \"\"" "${CONFIG_FILE}" 2>/dev/null
+    yq eval "explode(.) | .environments.${env}.connections.${conn}.type.remote-port // \"\"" "${CONFIG_FILE}" 2>/dev/null
 }
 
 # Generate random alphanumeric string (lowercase)
@@ -370,15 +370,15 @@ settings:
   # Connection type definitions with YAML anchors
   postgres: &postgres
     local-port: 15432
-    db-port: 5432
+    remote-port: 5432
 
   mysql: &mysql
     local-port: 13306
-    db-port: 3306
+    remote-port: 3306
 
   redis: &redis
     local-port: 16379
-    db-port: 6379
+    remote-port: 6379
 
 environments:
   staging:
@@ -512,18 +512,18 @@ create_tunnel() {
     local namespace
     local jump_pod_image
     local jump_pod_wait_timeout
-    local db_port
+    local remote_port
 
     namespace=$(get_setting "namespace" "${DEFAULT_NAMESPACE}")
     jump_pod_image=$(get_setting "jump-pod-image" "${DEFAULT_JUMP_POD_IMAGE}")
     jump_pod_wait_timeout=$(get_setting "jump-pod-wait-timeout" "${DEFAULT_JUMP_POD_WAIT_TIMEOUT}")
 
-    # Try to get db-port from connection type definition first
-    db_port=$(get_connection_db_port "${environment}" "${database}")
+    # Try to get remote-port from connection type definition first
+    remote_port=$(get_connection_remote_port "${environment}" "${database}")
 
     # If not found in connection type, fall back to global setting
-    if [[ -z "${db_port}" ]] || [[ "${db_port}" == "null" ]]; then
-        db_port=$(get_setting "db-port" "${DEFAULT_DB_PORT}")
+    if [[ -z "${remote_port}" ]] || [[ "${remote_port}" == "null" ]]; then
+        remote_port=$(get_setting "remote-port" "${DEFAULT_REMOTE_PORT}")
     fi
 
     # Get environment context
@@ -576,7 +576,7 @@ create_tunnel() {
     print_info "Namespace: ${namespace}"
     print_info "Jump pod: ${pod_name}"
     print_info "Local port: ${local_port}"
-    print_info "Remote port: ${db_port}"
+    print_info "Remote port: ${remote_port}"
     echo ""
 
     # Set up cleanup trap with current values
@@ -605,7 +605,7 @@ create_tunnel() {
     if ! kubectl --context="${context}" -n "${namespace}" run "${pod_name}" \
         --image="${jump_pod_image}" \
         --restart=Never \
-        --command -- socat TCP-LISTEN:5432,fork,reuseaddr TCP:"${db_host}":"${db_port}"; then
+        --command -- socat TCP-LISTEN:"${remote_port}",fork,reuseaddr TCP:"${db_host}":"${remote_port}"; then
         print_error "Failed to create jump pod"
         exit 1
     fi
@@ -627,7 +627,7 @@ create_tunnel() {
     echo ""
     print_success "Tunnel established!"
     print_info "Local:  localhost:${local_port}"
-    print_info "Remote: ${db_host}:${db_port}"
+    print_info "Remote: ${db_host}:${remote_port}"
     echo ""
     print_info "You can now connect to localhost:${local_port}"
     echo ""
@@ -635,7 +635,7 @@ create_tunnel() {
     echo ""
 
     # Port forward (this blocks until Ctrl+C)
-    kubectl --context="${context}" -n "${namespace}" port-forward pod/"${pod_name}" "${local_port}":5432
+    kubectl --context="${context}" -n "${namespace}" port-forward pod/"${pod_name}" "${local_port}":"${remote_port}"
 }
 
 # Main function
