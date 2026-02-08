@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [2.0.3] - 2026-02-08
+
+### Added
+
+- remove the CHANGELOG.md.bak after completed the release (#18)
+- use the emoji for the output information (#17)
+
+
 ## [2.0.2] - 2026-02-08
 
 ### Added
@@ -63,9 +71,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add the uninstall command for this plugin (#4)
 - improve the README.md and remove the duplicate sections (#1)
 
-[Unreleased]: https://github.com/sgyyz/kubectl-tcp-tunnel/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/sgyyz/kubectl-tcp-tunnel/compare/v2.0.3...HEAD
 [1.0.0]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v1.0.0
 [1.0.1]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v1.0.1
 [2.0.0]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v2.0.0
 [2.0.1]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v2.0.1
 [2.0.2]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v2.0.2
+[2.0.3]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v2.0.3
