@@ -42,6 +42,17 @@ jobs:
     name: Test Suite
     runs-on: ubuntu-latest
     needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        test_suite:
+          - "01_argument_parsing_test.bats"
+          - "02_config_handling_test.bats"
+          - "03_subcommands_test.bats"
+          - "04_validation_test.bats"
+          - "05_port_configuration_test.bats"
+          - "06_connection_types_test.bats"
+          - "07_pod_name_generation_test.bats"
 
     steps:
       - name: Checkout code
@@ -52,15 +63,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y bats
 
-      - name: Run BATS tests
+      - name: Run BATS tests - ${{ matrix.test_suite }}
         run: |
           bats --version
-          bats tests/tcp_tunnel_test.bats
+          bats tests/${{ matrix.test_suite }}
 
       - name: Display test results
         if: always()
         run: |
-          echo "Test execution completed"
+          echo "Test execution completed for ${{ matrix.test_suite }}"
 
   compatibility:
     name: Compatibility Check
