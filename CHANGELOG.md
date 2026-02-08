@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [2.0.2] - 2026-02-08
+
+### Added
+
+- add the short arg for --env/-e --connection/-c --local-port/-p (#16)
+- only keep the key information for the README (#14)
+
+### Fixed
+
+- update the --db to --connection (#15)
+
+
 ## [2.0.1] - 2026-02-08
 
 ### Added
@@ -51,8 +63,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add the uninstall command for this plugin (#4)
 - improve the README.md and remove the duplicate sections (#1)
 
-[Unreleased]: https://github.com/sgyyz/kubectl-tcp-tunnel/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/sgyyz/kubectl-tcp-tunnel/compare/v2.0.2...HEAD
 [1.0.0]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v1.0.0
 [1.0.1]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v1.0.1
 [2.0.0]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v2.0.0
 [2.0.1]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v2.0.1
+[2.0.2]: https://github.com/sgyyz/kubectl-tcp-tunnel/releases/tag/v2.0.2
