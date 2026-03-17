@@ -21,8 +21,8 @@ if ! command -v shellcheck &>/dev/null; then
     exit 0
 fi
 
-# Get list of staged shell scripts
-FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(sh|bash)$|^kubectl-tcp_tunnel$' || true)
+# Get list of staged shell scripts (exclude .claude/ and .specify/scripts/)
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(sh|bash)$|^kubectl-tcp_tunnel$' | grep -vE '^\.claude/|^\.specify/scripts/' || true)
 
 if [ -z "$FILES" ]; then
     echo -e "${GREEN}✓ No shell scripts to check${NC}"
