@@ -14,10 +14,6 @@
 .settings/
 .classpath
 
-# Claude Code
-.claude/
-CLAUDE.md
-
 # OS files
 .DS_Store
 .DS_Store?
